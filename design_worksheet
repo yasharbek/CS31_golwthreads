@@ -1,0 +1,76 @@
+TODO: (1) Complete this side (partitioning function), implement, & test
+      (2) Complete reverse side (overall program design), implement, & test
+(To print, run 'lpr design_worksheet')
+********************************************************************************
+(1) Board-partitioning function design
+    Reminder: Look at the whole LAB WRITEUP for information on how partitioning
+              should work and suggestions on how to get started.
+Q1: What parameters does this function need and what does it return?  Design 
+    its prototype? 
+    (Pro tip: pass-by-pointer params are a way to "return" multiple values.)
+
+    1) this function needs to know the dimensions of the board, such as 
+        the number of rows and the number of columns. It also needs to know
+        the number of threads, as well as the thread id. 
+        This function returns, in the form of a pass-by-pointer, the start
+        and end indices for each thread. 
+
+Q2: What does this function do?  Design your function's high-level control 
+    flow, and then refine in details. 
+
+    2) The function divides the number of rows/columns by the number of threads
+        to find the chunk size of each 'normal' thread. Then it uses the 
+        mod function to find the remainder of the division. Depending on
+        the id of the thread, the function finds the chunk based on whether
+        the thread will have an extra row/column. Then, the function 
+        determines the number of threads before it that will have the 
+        larger size chunk, and then multiplies that number by the larger 
+        chunk size. Then, the function adds the chunk size to an accumulator 
+        variable up to the threads id. It then sets thread start value to 
+        this accumulator variable, and the thread end value to the start value
+        plus the threads chunk size. 
+
+Q3: How are you going to test your function's correctness?  What are the 
+    different config and command-line options you want to test?
+
+    3) By comparing the values returned from partition with values that 
+        we get doing smaller board partitions by hand. This will help 
+        us to see whether we are getting the expected values from 
+        the partition function. 
+
+(2) Overall parallel gol program design
+    Reminder: Look at the LAB WRITEUP to understand requirements & control flow
+Q1: What changes need to be made to main's control flow for pthreads? 
+
+    1) First, we need to add code for the initialization of the mutex and 
+        barrier objects, as well as add code to handle the additional 
+        command line arguments. Other than that, we will use the 
+        pthread_create function to call play_gol rather than calling
+        play_gol by itself. We also need to include any new additional 
+        variables that we will need to spawn and handle pthreads. 
+
+Q2: What additional state do you need to add to the parallel solution?  
+    New globals or data structures?  Modifications to existing data structures?
+
+    2) We need to add new global variables for the mutex and barrier objects.
+        And, we need to add additional fields to our existing gol_data struct. 
+        We also need to correctly intialize our mutex and barrier objects. 
+
+
+Q3: What changes need to be made to parallelize play_gol?  Design the 
+    high-level control flow of the pthread version of play_gol, and refine as 
+    needed.  Do you need any new helper functions?  Modify existing ones?  
+    Any parts only 1 thread performs?
+
+    3) We need to modify any loops in play_gol to begin and end with 
+        the individual thread start and end values. We may need to 
+        modify existing helper methods that use loops or change 
+        global variables. We need to add a print statement that only the original thread will call. 
+
+Q4: Does your solution need synchronization?  How many and what type?  Where?
+
+    4) Yes, we need to include synchronization for any shared variables, such
+        as the global variable total_live. We also need to synchronize 
+        the threads for each round of play_gol so that threads do not start
+        another round while some are still working on the previous round. 
+        We will use the mutex and barrier objects to handle this synchronization. 
