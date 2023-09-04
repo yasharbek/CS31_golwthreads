@@ -4,10 +4,6 @@
  * Swarthmore PA
  */
 
-//Takes in command line arguments. Opens and reads a file. Simulates
-//the game of life based on whether a cell is live or not. 
-//Plays gol in different ways based on user input. 
-
 #include <pthreadGridVisi.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -40,19 +36,8 @@ static pthread_mutex_t my_mutex;
 
 /* Barrier */
 static pthread_barrier_t my_barrier;
-
-/* This struct represents all the data you need to keep track of your GOL
- * simulation.  Rather than passing individual arguments into each function,
- * we'll pass in everything in just one of these structs.
- * this is passed to play_gol, the main gol playing loop
- *
- * NOTE: You will need to use the provided fields here, but you'll also
- *       need to add additional fields. (note the nice field comments!)
- * NOTE: DO NOT CHANGE THE NAME OF THIS STRUCT!!!!
- */
 struct gol_data {
 
-    // NOTE: DO NOT CHANGE the names of these 4 fields (but USE them)
     int rows;  // the row dimension
     int cols;  // the column dimension
     int iters; // number of iterations to run the gol simulation
@@ -71,15 +56,11 @@ struct gol_data {
     int *new_array;
     
     /* fields used by ParaVis library (when run in OUTPUT_VISI mode). */
-    // NOTE: DO NOT CHANGE their definitions BUT USE these fields
     visi_handle handle;
     color3 *image_buff;
 };
 
 
-/****************** Function Prototypes **********************/
-// TODO: A few starting point function prototypes.
-//       You will need to implement these functions.
 
 /* the main gol game playing loop (prototype must match this) */
 void *play_gol(void *args);
@@ -87,7 +68,6 @@ void *play_gol(void *args);
 /* init gol data from the input file and run mode cmdline args */
 int init_game_data_from_args(struct gol_data *data, char **argv);
 
-// A mostly implemented function, but a bit more for you to add.
 /* print board to the terminal (for OUTPUT_ASCII mode) */
 void print_board(struct gol_data *data, int round);
 
@@ -225,11 +205,8 @@ int main(int argc, char **argv) {
         ret = gettimeofday(&stop_time, NULL);
 
         // clear the previous print_board output from the terminal:
-        // (NOTE: you can comment out this line while debugging)
         if (system("clear")) { perror("clear"); exit(1); }
 
-        // NOTE: DO NOT modify this call to print_board at the end
-        //       (it's to help us with grading your output)
         print_board(&data, data.iters);
     }
     else {  // OUTPUT_VISI: run with ParaVisi animation
@@ -697,5 +674,3 @@ int connect_animation(void (*applfunc)(struct gol_data *data),
     }
     return 0;
 }
-/***** END: DO NOT MODIFY THIS CODE *****/
-/******************************************************/
