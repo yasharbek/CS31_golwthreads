@@ -1,9 +1,3 @@
-/*
- * Swarthmore College, CS 31
- * Copyright (c) 2022 Swarthmore College Computer Science Department,
- * Swarthmore PA
- */
-
 #include <pthreadGridVisi.h>
 #include <stdlib.h>
 #include <stdio.h>
