@@ -627,8 +627,6 @@ void print_board(struct gol_data *data, int round) {
 }
 
 
-/**********************************************************/
-/***** START: DO NOT MODIFY THIS CODE *****/
 /* initialize ParaVisi animation */
 int setup_animation(struct gol_data* data) {
     /* connect handle to the animation */
